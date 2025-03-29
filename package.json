@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "autonumeric": "^4.10.8",
     "bootstrap": "^5.3.3",
     "next": "15.2.3",
     "react": "^19.0.0",
