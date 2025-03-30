@@ -7,15 +7,20 @@ import { useState, useEffect, useRef } from "react";
 import AutoNumeric from "autonumeric";
 
 const Home = () => {
-  const [jenisP, setJenisP] = useState("");
+  const [nama, setNama] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [noHP, setnoHP] = useState("");
+  const [email, setEmail] = useState("");
+  const [jenis, setJenis] = useState("");
   const [showBerat, setShowBerat] = useState(false);
   const [showBanyak, setShowBanyak] = useState(false);
   const [harga, setHarga] = useState(0);
   const [berat, setBerat] = useState(0);
   const [banyak, setBanyak] = useState(0);
+  const [message, setMessage] = useState("");
 
   const changeDD = (jenis: string) => {
-    setJenisP(jenis);
+    setJenis(jenis);
     if (jenis == "pakaian") {
       setShowBanyak(false)
       setShowBerat(true)
@@ -32,9 +37,9 @@ const Home = () => {
   const cekHarga = (kuantitasInput: string) => {
     const kuantitasConvert = kuantitasInput.replace(/[^0-9.]/g, "");
     var kuantitas = Number(kuantitasConvert);
-    var maxValue=1000;
+    var maxValue = 1000;
     if (kuantitas != 0) {
-      if (jenisP == "pakaian") {
+      if (jenis == "pakaian") {
         if (kuantitas > maxValue) {
           kuantitas = maxValue;
           setBerat(maxValue)
@@ -65,7 +70,7 @@ const Home = () => {
     }
 
     else {
-      if (jenisP == "pakaian") {
+      if (jenis == "pakaian") {
         setBerat(0);
         setHarga(0);
       }
@@ -75,6 +80,34 @@ const Home = () => {
       }
     }
   }
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const response = await fetch("/api/saveOrder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(
+        { nama, alamat, noHP, email, jenis, banyak, berat, harga }
+      ),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setMessage("Order saved successfully!");
+      setNama("")
+      setAlamat("")
+      setnoHP("")
+      setEmail("")
+      setHarga(0)
+      setJenis("")
+      setBerat(0)
+      setBanyak(0)
+    } else {
+      setMessage(data.error || "Something went wrong");
+    }
+  };
 
 
   useEffect(() => {
@@ -109,32 +142,32 @@ const Home = () => {
             </h1>
             <hr />
           </div>
-          <form method="post" action={"/SaveOrder"}>
+          <form onSubmit={handleSubmit}>
             <div className="card-body">
 
               <div className="d-flex justify-content-center align-items-center">
                 <label className="col-md-2 me-3 text-start"> Nama <b className="text-danger">*</b> </label>
-                <input type="text" name="nama" className="form-control w-75" placeholder="Nama Pemesan Laundry" required></input>
+                <input type="text" name="nama" className="form-control w-75" placeholder="Nama Pemesan Laundry" required value={nama} onChange={(e) => setNama(e.target.value)}></input>
               </div>
 
               <div className="d-flex justify-content-center align-items-center mt-3">
                 <label className="col-md-2 me-3">Alamat  <b className="text-danger">*</b></label>
-                <textarea name="alamat" className="form-control w-75" placeholder="Alamat Pengiriman Laundry" required></textarea>
+                <textarea name="alamat" className="form-control w-75" placeholder="Alamat Pengiriman Laundry" required value={alamat} onChange={(e) => setAlamat(e.target.value)}></textarea>
               </div>
 
               <div className="d-flex justify-content-center align-items-center mt-3">
                 <label className="col-md-2 me-2">No Telepon  <b className="text-danger">*</b></label>
-                <input type="text" name="notelp" className="form-control w-75 auto-numericHP" placeholder="Nomor Telepon Pemesan Laundry" required></input>
+                <input type="text" name="notelp" className="form-control w-75 auto-numericHP" placeholder="Nomor Telepon Pemesan Laundry" required value={noHP} onChange={(e) => setnoHP(e.target.value)}></input>
               </div>
 
               <div className="d-flex justify-content-center align-items-center mt-3">
                 <label className="col-md-2  me-2">Email  </label>
-                <input type="text" name="email" className="form-control w-75" placeholder="Email Pemesan Laundry (Optional)"></input>
+                <input type="text" name="email" className="form-control w-75" placeholder="Email Pemesan Laundry (Optional)" value={email} onChange={(e) => setEmail(e.target.value)}></input>
               </div>
 
               <div className="d-flex justify-content-center align-items-center mt-3">
                 <label className="col-md-2  me-2">Jenis Pakaian  <b className="text-danger" >*</b></label>
-                <select className="form-control w-75" id="jenisP" onChange={(e) => changeDD(e.target.value)} value={jenisP} required>
+                <select className="form-control w-75" id="jenis" onChange={(e) => changeDD(e.target.value)} value={jenis} required>
                   <option value="" disabled style={{ color: "red" }}>---Mohon Pilih Jenis Pakaian---</option>
                   <option value="pakaian">Pakaian (Baju, Celana, Kemeja, dll)</option>
                   <option value="sepatu">Sepatu</option>
