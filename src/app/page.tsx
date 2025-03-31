@@ -5,6 +5,7 @@ import { Greet } from "./components/greet";
 import { Counter } from "./components/counter";
 import { useState, useEffect, useRef } from "react";
 import AutoNumeric from "autonumeric";
+import "@/app/styles/page.css"
 
 const Home = () => {
   const [nama, setNama] = useState("");
@@ -18,7 +19,7 @@ const Home = () => {
   const [berat, setBerat] = useState(0);
   const [banyak, setBanyak] = useState(0);
   const [message, setMessage] = useState("");
-
+  const [navbar, navbarClick] = useState(true);
   const changeDD = (jenis: string) => {
     setJenis(jenis);
     if (jenis == "pakaian") {
@@ -134,6 +135,22 @@ const Home = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center h-100">
+
+      {navbar ? (
+        <div className={`navbarBurger`} onClick={() => navbarClick(!navbar)}>
+          ≡
+        </div>
+      )
+        :
+        <div className={`navbarBurgerOpen ${navbar ? "" : "active"}`} onClick={() => navbarClick(!navbar)}>
+          <div className="tombolX">
+            X
+          </div>
+          <div className="menuNavbar">
+            <a className="hrefAdmin" href="/Admin/Login">Admin Login</a>
+          </div>
+        </div>
+      }
       <div className="col-5">
         <div className="card card-primary">
           <div className="card-head">

@@ -1,0 +1,44 @@
+.navbarBurger {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 40px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.navbarBurgerOpen {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 200px;
+    height: 100vh;
+    z-index: 2;
+    background-color: whitesmoke;
+}
+
+.tombolX {
+    position: relative;
+    top: 0;
+    left: -10px;
+    font-size: 40px;
+    font-weight: bolder;
+    z-index: 2;
+    display: flex;
+    justify-content: end;
+    cursor: pointer;
+}
+
+.menuNavbar {
+    position: relative;
+    top: 0;
+    left: -10px;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.hrefAdmin {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
