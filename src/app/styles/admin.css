@@ -1,0 +1,48 @@
+.navbarBurgerAdmin {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 40px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.navbarBurgerOpenAdmin {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 200px;
+    height: 100vh;
+    z-index: 2;
+    background-color: whitesmoke;
+}
+
+.tombolXAdmin {
+    position: relative;
+    top: 0;
+    left: -10px;
+    font-size: 40px;
+    font-weight: bolder;
+    z-index: 2;
+    display: flex;
+    justify-content: end;
+    cursor: pointer;
+}
+
+.menuNavbarAdmin {
+    position: relative;
+    top: 0;
+    font-size: 20px;
+    margin-left: 0px;
+    margin-top: 20px;
+}
+
+.menuNavbarAdmin ul li{
+    margin-bottom: 20px;
+}
+
+.menuNavbarAdmin a {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}

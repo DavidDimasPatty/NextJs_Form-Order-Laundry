@@ -10,7 +10,7 @@ const Login = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const response = await fetch("api/LoginAdmin", {
+        const response = await fetch("/api/LoginAdmin", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(
@@ -20,6 +20,7 @@ const Login = () => {
 
         const data = await response.json();
         if (response.ok) {
+            // console.log(data);
             window.location.href="/Admin/Home"
         } else {
             console.log(data);
@@ -29,7 +30,7 @@ const Login = () => {
     return (
         <div className="d-flex justify-content-center align-items-center h-100">
             <div className="col-3">
-                <form onSubmit={() => handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className="card card-primary">
                         <div className="card-header">
                             <h3>Login</h3>
@@ -37,16 +38,17 @@ const Login = () => {
                         <div className="card-body">
                             <div className="d-flex justify-content-center align-items-center">
                                 <label className="col-md-2 me-3 text-start"> Username  </label>
-                                <input type="text" name="nama" className="form-control w-75" placeholder="Username Admin" required value={username} onChange={(e) => setUsername(e.target.value)}></input>
+                                <input type="text" name="username" className="form-control w-75" placeholder="Username Admin" required value={username} onChange={(e) => setUsername(e.target.value)}></input>
                             </div>
 
                             <div className="d-flex justify-content-center align-items-center mt-3">
                                 <label className="col-md-2 me-3 text-start"> Password </label>
-                                <input type="text" name="nama" className="form-control w-75" placeholder="Password Admin" required value={password} onChange={(e) => setPassword(e.target.value)}></input>
+                                <input type="password" name="password" className="form-control w-75" placeholder="Password Admin" required value={password} onChange={(e) => setPassword(e.target.value)}></input>
                             </div>
                         </div>
                         <div className="card-footer text-center">
                             <button className="btn btn-info">Log In</button>
+                            <button type="button" className="btn btn-danger ms-3" onClick={()=>window.location.href="/"}>Back</button>
                         </div>
                     </div>
                 </form>

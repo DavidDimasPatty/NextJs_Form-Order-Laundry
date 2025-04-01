@@ -21,8 +21,12 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Banyak is required for non-pakaian" }, { status: 400 });
         }
 
+        const datetime = new Date().toISOString(); // Waktu dalam format ISO
+        const ipaddress = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "Unknown"; // Ambil IP dari request
+
         const result = await db.collection("order").insertOne({
-            nama, alamat, noHP, email, jenis, banyak, berat, harga,
+            nama, alamat, noHP, email, jenis, banyak, berat, harga, addtime: datetime,
+            addid: "WebLaundry" + ipaddress
         });
 
         return NextResponse.json({ message: "Order saved", data: result }, { status: 201 });
