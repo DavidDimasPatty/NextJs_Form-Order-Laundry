@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
         const result = await db.collection("order").insertOne({
             nama, alamat, noHP, email, jenis, banyak, berat, harga, addtime: datetime,
-            addid: "WebLaundry" + ipaddress
+            addid: "WebLaundry" + ipaddress, status: 0
         });
 
         return NextResponse.json({ message: "Order saved", data: result }, { status: 201 });

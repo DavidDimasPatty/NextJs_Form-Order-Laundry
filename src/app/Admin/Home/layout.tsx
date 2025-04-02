@@ -18,7 +18,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     <div className="menuNavbarAdmin">
                         <ul>
                             <li><a className="homeAdmin" href="/Admin/Home">Home</a></li>
-                            <li><a className="homeAdmin" href="/Admin/DaftarPesanan">Daftar Pesanan</a></li>
+                            <li><a className="homeAdmin" href="/Admin/Home/DaftarPesanan">Daftar Pesanan</a></li>
+                            <li><a className="homeAdmin" href="/Admin/Home/HistoryDaftarPesanan">Riwayat Daftar Pesanan</a></li>
                             <li><a className="homeAdmin" href="/Admin/Login">Log Out</a></li>
                         </ul>
                     </div>

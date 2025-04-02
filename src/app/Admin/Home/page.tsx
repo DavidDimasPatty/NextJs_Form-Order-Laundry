@@ -1,14 +1,44 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { Bar, Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import { Bar, Pie, Line } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement } from "chart.js";
 
 // Registrasi komponen untuk Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,  // ✅ Registrasi elemen "point"
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
 const Home = () => {
+    interface Customer {
+        _id: string;
+        totalPesanan: number;
+    }
+
+    interface status {
+        _id: number;
+        totalOrder: number;
+    }
+
+    interface OrderDataIncome {
+        _id: number;
+        totalPendapatan: number;
+    }
+
+    interface OrderData {
+        _id: number;
+        totalPesanan: number;
+    }
+
     const [totalPesan, setTotalPesan] = useState(0);
     const [totalPemasukan, setTotalPemasukan] = useState(0);
+    const [customerMost, setCustomerMost] = useState<Customer[]>([]);
     const [chartData, setChartData] = useState<{
         labels: string[];
         datasets: { label: string; data: number[]; backgroundColor: string }[];
@@ -16,14 +46,6 @@ const Home = () => {
         labels: [],
         datasets: []
     });
-
-    interface Customer {
-        _id: string;
-        totalPesanan: number;
-    }
-
-    const [customerMost, setCustomerMost] = useState<Customer[]>([]);
-
     const [chartDataPie, setChartDataPie] = useState<{
         labels: string[];
         datasets: { label: string; data: number[]; backgroundColor: string[] }[];
@@ -31,7 +53,19 @@ const Home = () => {
         labels: [],
         datasets: []
     });
+    const [chartDataIncome, setChartDataIncome] = useState<{
+        labels: string[];
+        datasets: { label: string; data: number[]; backgroundColor: string; borderColor: string, fill: boolean }[];
+    }>({
+        labels: [],
+        datasets: []
+    });
 
+
+    const [totalStatus, setTotalStatus] = useState<status[]>([]);
+    const [pesananBerhasil, setPesananBerhasil] = useState(0);
+    const [pesananGagal, setPesananGagal] = useState(0);
+    const [pesananProses, setPesananProses] = useState(0);
 
     useEffect(() => {
         const totalPesananData = async () => {
@@ -56,6 +90,17 @@ const Home = () => {
             }
         };
 
+
+        const totalStatusPesan = async () => {
+            const response = await fetch("/api/statusPesan");
+            const result = await response.json();
+            console.log(result);
+            setTotalStatus(result);
+            setPesananBerhasil(result[2].totalOrder)
+            setPesananProses(result[1].totalOrder)
+            setPesananGagal(result[0].totalOrder)
+        };
+
         const customerMostOrder = async () => {
             const response = await fetch("/api/customerMost");
 
@@ -65,19 +110,12 @@ const Home = () => {
 
         const fetchOrdersPerMonth = async () => {
             const response = await fetch("/api/totalPesananPerBulan");
-            interface OrderData {
-                _id: number;
-                totalPesanan: number;
-            }
             const result: OrderData[] = await response.json();
-            // Buat array label bulan dari 1-12
             const bulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-            let dataChart = Array(12).fill(0); // Default 0 untuk semua bulan
-
+            let dataChart = Array(12).fill(0);
             result.forEach(item => {
-                dataChart[item._id - 1] = item.totalPesanan; // Isi jumlah pesanan
+                dataChart[item._id - 1] = item.totalPesanan;
             });
-
             setChartData({
                 labels: bulan,
                 datasets: [
@@ -85,6 +123,28 @@ const Home = () => {
                         label: "Total Pesanan",
                         data: dataChart,
                         backgroundColor: "rgba(54, 162, 235, 0.6)"
+                    }
+                ]
+            });
+        };
+
+        const fetchIncomePerMonth = async () => {
+            const response = await fetch("/api/pendapatanPerBulan");
+            const result: OrderDataIncome[] = await response.json();
+            const bulan = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+            let dataChart = Array(12).fill(0);
+            result.forEach(item => {
+                dataChart[item._id - 1] = item.totalPendapatan;
+            });
+            setChartDataIncome({
+                labels: bulan,
+                datasets: [
+                    {
+                        label: "Total Pendapatan",
+                        data: dataChart,
+                        backgroundColor: "rgba(54, 162, 235, 0.6)",
+                        borderColor: "blue",
+                        fill: true
                     }
                 ]
             });
@@ -137,7 +197,9 @@ const Home = () => {
             totalPemasukanData(),
             customerMostOrder(),
             fetchOrdersPerMonth(),
-            jenisPakaianTerbanyak()
+            jenisPakaianTerbanyak(),
+            totalStatusPesan(),
+            fetchIncomePerMonth()
         ]);
 
     }, []);
@@ -197,7 +259,7 @@ const Home = () => {
                     <div className="col">
                         <div className="card card-primary">
                             <div className="card-header text-center">
-                                <b>Pelanggan Laundry Terbanyak</b>
+                                <b>Order Laundry Terbanyak</b>
                             </div>
                             <div className="card-body text-center">
                                 <table className="table table-primary">
@@ -240,7 +302,59 @@ const Home = () => {
                 </div>
                 {/* **** */}
 
+                {/* Status*/}
+                <div className="col-md-6 d-flex justify-content-center align-items-center gap-3">
 
+                    <div className="col">
+                        <div className="card card-primary">
+                            <div className="card-header text-center">
+                                <b>Pesanan Berhasil</b>
+                            </div>
+                            <div className="card-body text-center">
+                                <h4>{pesananBerhasil}</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col">
+                        <div className="card card-primary">
+                            <div className="card-header text-center">
+                                <b>Pesanan Diproses</b>
+                            </div>
+                            <div className="card-body text-center">
+                                <h4>{pesananProses}</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col">
+                        <div className="card card-primary">
+                            <div className="card-header text-center">
+                                <b>Pesanan Ditolak</b>
+                            </div>
+                            <div className="card-body text-center">
+                                <h4>{pesananGagal}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* **** */}
+
+                {/* Pendapatan PerBulan*/}
+                <div className="col-md-3 d-flex justify-content-center align-items-center">
+
+                    <div className="col">
+                        <div className="card card-primary">
+                            <div className="card-header text-center">
+                                <b>Pendapatan per Bulan</b>
+                            </div>
+                            <div className="card-body text-center">
+                                <Line data={chartDataIncome} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* **** */}
             </div>
         </div>
     );
