@@ -96,9 +96,29 @@ const Home = () => {
             const result = await response.json();
             console.log(result);
             setTotalStatus(result);
-            setPesananBerhasil(result[2].totalOrder)
-            setPesananProses(result[1].totalOrder)
-            setPesananGagal(result[0].totalOrder)
+
+            const matchedBerhasil = result.find((item: { _id: number }) =>
+                [1].includes(item._id)
+            );
+
+            const matchedGagal = result.find((item: { _id: number }) =>
+                [-1].includes(item._id)
+            );
+
+            const matchedWait = result.find((item: { _id: number }) =>
+                [0].includes(item._id)
+            );
+            console.log(matchedGagal);
+            if (matchedBerhasil!=null) {
+                setPesananBerhasil(matchedBerhasil.totalOrder)
+            }
+            if (matchedWait!=null) {
+                setPesananProses(matchedWait.totalOrder)
+
+            }
+            if (matchedGagal!=null) {
+                setPesananGagal(matchedGagal.totalOrder)
+            }
         };
 
         const customerMostOrder = async () => {
@@ -205,8 +225,8 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="col w-100 p-4">
-            <div className="row justify-content-beetwen align-items-center">
+        <div className="col w-100 p-4 d-flex justify-content-center align-items-center">
+            <div className="row justify-content-center align-items-center">
                 {/* Data-data Perjumlahan */}
                 <div className="col-md-3 d-flex justify-content-center align-items-center gap-3">
 
