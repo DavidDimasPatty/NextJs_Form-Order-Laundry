@@ -134,7 +134,7 @@ const Home = () => {
 
 
   return (
-    <div className="d-flex justify-content-center align-items-center h-100">
+    <div className="d-flex justify-content-center align-items-center h-100 wrapUser">
 
       {navbar ? (
         <div className={`navbarBurger`} onClick={() => navbarClick(!navbar)}>
