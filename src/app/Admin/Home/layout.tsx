@@ -26,7 +26,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         </div>
                     </div>
                 }
-            </div>            
+                <div className="titleCompany">
+                    <h4>Karina Laundry</h4>
+                </div>
+            </div>
             {children}
         </div>
     )

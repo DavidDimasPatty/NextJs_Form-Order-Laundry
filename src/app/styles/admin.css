@@ -7,6 +7,15 @@
     cursor: pointer;
 }
 
+.titleCompany{
+    position: absolute;
+    top: 20px;
+    left: 50px;
+    font-size: 40px;
+    font-weight: bolder;
+    color: white;
+}
+
 .navbarBurgerOpenAdmin {
     position: absolute;
     top: 0;
