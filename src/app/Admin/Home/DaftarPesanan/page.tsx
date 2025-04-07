@@ -87,9 +87,9 @@ const DaftarPesanan = () => {
     ];
 
     return (
-        <div className="d-flex justify-content-center align-items-start vh-100 mt-5 pt-3">
-            <div className="col-md-11">
-                <div className="card card-primary">
+        <div className="col justify-content-center align-items-start mt-5">
+            <div className="d-flex  justify-content-center align-items-start">
+                <div className="card card-primary w-75">
                     <div className="card-header">
                         <h3>Daftar Pesanan</h3>
                     </div>

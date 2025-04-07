@@ -109,14 +109,14 @@ const Home = () => {
                 [0].includes(item._id)
             );
             console.log(matchedGagal);
-            if (matchedBerhasil!=null) {
+            if (matchedBerhasil != null) {
                 setPesananBerhasil(matchedBerhasil.totalOrder)
             }
-            if (matchedWait!=null) {
+            if (matchedWait != null) {
                 setPesananProses(matchedWait.totalOrder)
 
             }
-            if (matchedGagal!=null) {
+            if (matchedGagal != null) {
                 setPesananGagal(matchedGagal.totalOrder)
             }
         };
@@ -225,10 +225,11 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="col w-100 p-4 d-flex justify-content-center align-items-center">
-            <div className="row justify-content-center align-items-center">
-                {/* Data-data Perjumlahan */}
-                <div className="col-md-3 d-flex justify-content-center align-items-center gap-3">
+        <div className="container-fluid d-flex justify-content-center align-items-center">
+            <div className="row vw-100 h-auto">
+                
+                 {/* Data-data Perjumlahan */}
+                <div className="col-md-3 d-flex justify-content-center align-items-center">
 
                     <div className="row-md-5 w-75 p-6">
                         <div className="col mb-4">
@@ -257,9 +258,9 @@ const Home = () => {
                 {/* **** */}
 
                 {/* Grafik Pesanan Per Bulan*/}
-                <div className="col-md-6 d-flex justify-content-center align-items-center">
+                <div className="col-md-5 d-flex justify-content-center align-items-center">
 
-                    <div className="col">
+                    <div className="col mt-4">
                         <div className="card card-primary">
                             <div className="card-header text-center">
                                 <b>Grafik Pesanan per Bulan</b>
@@ -274,7 +275,7 @@ const Home = () => {
 
 
                 {/* Table Pelanggan Laundry Terbanyak */}
-                <div className="col-md-3 d-flex justify-content-beetwen align-items-center">
+                <div className="col-md-4 d-flex justify-content-beetwen align-items-center">
 
                     <div className="col">
                         <div className="card card-primary">
