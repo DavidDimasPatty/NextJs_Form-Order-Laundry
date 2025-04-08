@@ -155,7 +155,7 @@ const Home = () => {
         <div className="card card-primary">
           <div className="card-head">
             <h1 className="text-3xl text-center">
-              Form Laundry
+              <b>Form Order Laundry</b>
             </h1>
             <hr />
           </div>
